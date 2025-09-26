@@ -2,7 +2,7 @@
 
 This repository contains two implementations of a weather query application - one built with Node.js and another with Go. Both applications provide identical functionality for querying weather data from multiple services.
 
-## Overview
+### Overview
 
 The weather query application aggregates temperature data from two different weather services (weatherapi.com and weatherstack.com) and returns the average temperature for a requested location. The application implements request aggregation to minimize API costs by grouping requests for the same location.
 
