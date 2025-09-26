@@ -1,0 +1,14 @@
+services:
+  weather-app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./weather.sqlite:/goweather/weather.sqlite
+    environment:
+      - DATABASE_PATH=/goweather/weather.sqlite
+    env_file:
+      - .env
+    restart: unless-stopped  

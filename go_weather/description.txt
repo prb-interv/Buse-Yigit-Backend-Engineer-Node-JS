@@ -1,0 +1,65 @@
+Backend Engineer (Go)
+
+Case Study
+
+Requirements
+
+As part of this case, you are expected to develop a “weather query
+application” using the Go programming language.
+
+• The application will have a single endpoint: /weather?q=<location>
+• Each request to this endpoint must fetch data from two different weather
+services and return the average temperature to the user.
+• Once the request is successfully processed, return to the user with a
+response in JSON format and a 200 OK status code: { “location”:
+“<location>”, “temperature”: <average-temp> }
+• ·To minimize costs associated with weather API services, incoming requests
+will be grouped by location and held for up to 5 seconds. During this period,
+multiple requests will be aggregated, and a single query will be sent to the
+weather services. The response will then be shared with all users in the
+group.
+• No request should be held for more than 5 seconds. If no additional
+requests for the same location arrive within this period, the weather
+services will be queried immediately, and the response will be returned to
+the user without delay. For example, if a single request is made for
+"Istanbul," the user will receive a response after approximately 6 seconds (5
+seconds of waiting plus ~1 second for the weather API query).
+• If a second request for the same location arrives midway through the 5-
+second waiting period (e.g., after 3 seconds), that request joins the group
+and will receive a response after approximately 3 seconds (2 seconds of
+waiting plus ~1 second for the query).
+• A maximum of 10 users can be queued for a single location. Once this limit
+is reached, the service query should be executed immediately and without
+any further delay, and all users should receive the response.
+• Responses from the weather API services must be logged in the database.
+
+Table name: weather_queries
+he table schema will be as follows:
+A. “id” (auto incremented int)
+B. “location” (text)
+C. “service_1_temperature” (float)
+D. “service_2_temperature” (float)
+E. “request_count” (int) // indicates how many requests are queued
+
+SQLite will be used. Attached is an example database file:
+“weather.sqlite.”
+User requests should not be delayed due to database logging.
+
+
+Available weather services:
+
+weatherapi.com
+
+• API Key: 147d644004414106a2f75650232001
+• Sample request: GET http://api.weatherapi.com/v1/forecast.json?
+key=147d644004414106a2f7565023200 1&q=Istanbul&days=1&aqi=no&alerts=no
+• You can use the current->temp_c field in the response.
+
+weatherstack.com
+
+• API key: 838c0d5e8fcc1dbbc66e8c1c0a14c6e5
+• Sample request: GET http://api.weatherstack.com/current?
+access_key=838c0d5e8fcc1dbbc66e8c1c0a14c 6e5&query=Istanbul
+• You can use the current->temperature field in the response.
+• !!: The free version of Weatherstack only supports HTTP requests. Requests
+sent via HTTPS will result in an error.
